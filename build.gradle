@@ -1,0 +1,26 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.0.16.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version: '3.0.16.Final'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.7.4'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Main-Class': 'com.km.goeuro.devtest.Main'
+    }
+    baseName = 'GoEuroTest'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
